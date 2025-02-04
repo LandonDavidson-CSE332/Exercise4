@@ -68,7 +68,15 @@ public class AVLTree  <K extends Comparable<K>, V> extends BinarySearchTree<K,V>
     }
 
     private void rotateLeft(TreeNode<K, V> node) {
-
+        TreeNode<K, V> rightNode = node.right;
+        if (rightNode.left != null) {
+            node.right = rightNode.left;
+        } else {
+            node.right = null;
+        }
+        rightNode.left = node;
+        node.updateHeight();
+        rightNode.updateHeight();
     }
 
     private void rotateRight(TreeNode<K, V> node) {
