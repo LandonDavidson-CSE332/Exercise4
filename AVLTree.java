@@ -9,6 +9,7 @@ public class AVLTree  <K extends Comparable<K>, V> extends BinarySearchTree<K,V>
     public V insert(K key, V value) {
         if (root == null) {
             root = new TreeNode<>(key, value);
+            size++;
             return null;
         }
         Stack<TreeNode<K, V>> stack = new Stack<>();
@@ -22,6 +23,7 @@ public class AVLTree  <K extends Comparable<K>, V> extends BinarySearchTree<K,V>
                 cur_node.value = value;
                 return old_val;
             }
+            size++;
             // Traverse the tree, left if key is smaller and right if key is larger
             if (cur_node.key.compareTo(key) < 0) {
                 // If there is an empty spot where the new node should go
