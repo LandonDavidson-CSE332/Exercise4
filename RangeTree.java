@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Random;
 
 public class RangeTree{
     private OrderedDeletelessDictionary<Double, Range> byStart;
@@ -61,21 +62,61 @@ public class RangeTree{
     // with any ranges, so we should return false.
     // The running time of this method should be O(log n)
     public boolean hasConflict(Range query){
-        // If the two AVL Trees are empty there is no conflict. They should be the same size but just being explicit
+        // If the range tree is empty there is no conflict
         if (isEmpty()) {
             return false;
         }
-        Double prev_key = byEnd.findPrevKey(query.end);
-        if (prev_key == null) {
-            return false;
+
+        // An event only conflicts if it ends or starts between another event's start and end
+        // first check that the new event doesn't end in the middle of an existing event
+        Double end_prev_start = byStart.findPrevKey(query.end);
+        Double end_next_end = byEnd.findNextKey(query.end);
+        // If one of the values are null than the new event doesn't end between another
+        if (end_prev_start != null && end_next_end != null) {
+            // Get the range associated with the keys and if they are equal then the new event conflicts
+            Range prev_event = byStart.find(end_prev_start);
+            Range next_event = byEnd.find(end_next_end);
+            if (prev_event.equals(next_event)) {
+                return true;
+            }   
         }
-        Range prev_range = byEnd.find(prev_key);
-        // We know that the previous range's end is smaller than the quary's end since we used findPrevKey, 
-        // so we only need to check if the previous range's end is greater than query's start.
-        // If the previous end and query start are equal there is no conflict since they are back to back so use > not >=
-        if (prev_range.end > query.start) {
-            return true;
+
+        // Next check that the new event doesn't start between another event's start and end
+        Double start_prev_start = byStart.findPrevKey(query.start);
+        Double start_next_end = byEnd.findNextKey(query.start);
+        // If one of the values are null than the new event doesn't end between another
+        if (start_prev_start != null && start_next_end != null) {
+            // Get the range associated with the keys and if they are equal then the new event conflicts
+            Range prev_event = byStart.find(start_prev_start);
+            Range next_event = byEnd.find(start_next_end);
+            if (prev_event.equals(next_event)) {
+                return true;
+            }
         }
+
+        // Then check that an existing event doesn't surround the new event
+        // If one of the the values are null than an existing event doesn't surround the new event
+        if (start_prev_start != null && end_next_end != null) {
+            // Get the range associated with the keys and if they are equal the new event conflicts
+            Range prev_event = byStart.find(start_prev_start);
+            Range next_event = byEnd.find(end_next_end);
+            if (prev_event.equals(next_event)) {
+                return true;
+            }
+        }
+
+        // Finally check that our new event doesn't surround an existing event
+        // If one of the the values are null than the new event doesn't surround an existing event
+        if (end_prev_start != null && start_next_end != null) {
+            // Get the range associated with the keys and if they are equal the new event conflicts
+            Range prev_event = byStart.find(end_prev_start);
+            Range next_event = byEnd.find(start_next_end);
+            if (prev_event.equals(next_event)) {
+                return true;
+            }
+        }
+
+        // If we passed all the tests then the event doesn't collide
         return false;
     }
 
