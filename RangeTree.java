@@ -62,7 +62,7 @@ public class RangeTree{
     // The running time of this method should be O(log n)
     public boolean hasConflict(Range query){
         // TODO
-        return false;
+        return true;
     }
 
     // Inserts the given range into the data structure if it has no conflict.
@@ -71,7 +71,14 @@ public class RangeTree{
     // added to the data structure.
     // Running time should be O(log n)
     public boolean insert(Range query){
-        // TODO
-        return false;
+        // If there is a conflict return false
+        if (hasConflict(query)) {
+            return false;
+        }
+        // Otherwise add by start and by end into the AVL Trees and increment size
+        byStart.insert(query.start, query);
+        byEnd.insert(query.end, query);
+        size++;
+        return true;
     }
 }
