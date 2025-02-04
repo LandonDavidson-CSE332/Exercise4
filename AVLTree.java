@@ -52,7 +52,7 @@ public class AVLTree  <K extends Comparable<K>, V> extends BinarySearchTree<K,V>
                 if (getBalance(cur_node.right) == 1) {
                     rotateRight(cur_node.right, cur_node);
                 }
-                TreeNode<K, V> parent = stack.peek();
+                TreeNode<K, V> parent = !stack.isEmpty ? stack.peek() : null;
                 // Then rotate left to balance
                 rotateLeft(cur_node, parent);
             // Case where left side is heavy
@@ -61,17 +61,17 @@ public class AVLTree  <K extends Comparable<K>, V> extends BinarySearchTree<K,V>
                 if (getBalance(cur_node.left) == -1) {
                     rotateLeft(cur_node.left, cur_node);
                 }
-                TreeNode<K, V> parent = stack.peek();
+                TreeNode<K, V> parent = !stack.isEmpty ? stack.peek() : null;
                 // Then rotate right to balance
                 rotateRight(cur_node, parent);
             }
             // If the node is balanced we can move to its parent since height is already updated
         }
-
         return null;
     }
 
     private int getBalance(TreeNode<K, V> node) {
+        // If a node doesn't exist use -1 for its height
         int leftHeight = node.left != null ? node.left.height : -1;
         int rightHeight = node.right != null ? node.right.height : -1;
         return leftHeight - rightHeight;
@@ -80,6 +80,17 @@ public class AVLTree  <K extends Comparable<K>, V> extends BinarySearchTree<K,V>
     private void rotateLeft(TreeNode<K, V> node, TreeNode<K, V> parent) {
         // Store the right node of node since we are about to overwrite it
         TreeNode<K, V> rightNode = node.right;
+        // If node is root set rightNode to root
+        if (parent == null) {
+            root = rightNode
+        // Otherwise set rightNode to the proper child of parent (compare keys)
+        } else {
+            if (parent.key.compareTo(rightNode.key) > 0) {
+                parent.left = rightNode;
+            } else {
+                parent.right  = rightNode
+            }
+        }
         // If node.right.left isn't null we need to move it to node.right
         if (rightNode.left != null) {
             node.right = rightNode.left;
@@ -96,6 +107,17 @@ public class AVLTree  <K extends Comparable<K>, V> extends BinarySearchTree<K,V>
     private void rotateRight(TreeNode<K, V> node, TreeNode<K, V> parent) {
         // Store the left node of node since we are about to overwrite it
         TreeNode<K, V> leftNode = node.left;
+        // If node is root set leftNode to root
+        if (parent == null) {
+            root = leftNode
+        // Otherwise set leftNode to the proper child of parent (compare keys)
+        } else {
+            if (parent.key.compareTo(leftNode.key) > 0) {
+                parent.left = leftNode;
+            } else {
+                parent.right  = leftNode
+            }
+        }
         // If node.left.right isn't null we need to move it to node.left
         if (leftNode.right != null) {
             node.left = leftNode.right;
