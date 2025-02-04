@@ -100,8 +100,21 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedDele
     // Returns null if the given key is less than or equal to the smallest
     // key present
     public K findPrevKey(K key){
-        // TODO
-        return null;
+        TreeNode<K, V> cur_node = root;
+        // Whenever we see a key larger than key save it in prev
+        K prev = null;
+        // Search for the given tree while storing any keys smaller than it until we hit a leaf
+        while (cur_node != null) {
+            // If current key is larger than or equal to key move left
+            if (cur_node.key.compareTo(key) >= 0) {
+                cur_node = cur_node.left;
+            // Else save current key to prev and move right
+            } else {
+                prev = cur_node.key;
+                cur_node = cur_node.right;
+            }
+        }
+        return prev;
     }
 
     public V insert(K key, V value){
@@ -145,7 +158,7 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedDele
     }
 
     public List<K> getKeys(){
-        List<K> keys = new ArrayList<K>();
+        List<K> keys = new ArrayList<>();
         inorderFillKeys(keys, root);
         return keys;
     }
