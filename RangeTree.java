@@ -61,8 +61,22 @@ public class RangeTree{
     // with any ranges, so we should return false.
     // The running time of this method should be O(log n)
     public boolean hasConflict(Range query){
-        // TODO
-        return true;
+        // If the two AVL Trees are empty there is no conflict. They should be the same size but just being explicit
+        if (isEmpty()) {
+            return false;
+        }
+        Double prev_key = byEnd.findPrevKey(query.end);
+        if (prev_key == null) {
+            return false;
+        }
+        Range prev_range = byEnd.find(prev_key);
+        // We know that the previous range's end is smaller than the quary's end since we used findPrevKey, 
+        // so we only need to check if the previous range's end is greater than query's start.
+        // If the previous end and query start are equal there is no conflict since they are back to back so use > not >=
+        if (prev_range.end > query.start) {
+            return true;
+        }
+        return false;
     }
 
     // Inserts the given range into the data structure if it has no conflict.

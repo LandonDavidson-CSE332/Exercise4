@@ -4,7 +4,7 @@ public class Client {
     public static void main(String[] args){
         testAVLInsert();
         testRangeTree();
-        testNextPrev();   
+        testNextPrev();
     }
 
     public static void testAVLInsert(){
