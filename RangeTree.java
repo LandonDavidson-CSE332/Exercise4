@@ -93,24 +93,11 @@ public class RangeTree{
             }
         }
 
-        // Then check that an existing event doesn't surround the new event
-        // If one of the the values are null than an existing event doesn't surround the new event
-        if (start_prev_start != null && end_next_end != null) {
-            // Get the range associated with the keys and if they are equal the new event conflicts
-            Range prev_event = byStart.find(start_prev_start);
-            Range next_event = byEnd.find(end_next_end);
-            if (prev_event.equals(next_event)) {
-                return true;
-            }
-        }
-
         // Finally check that our new event doesn't surround an existing event
         // If one of the the values are null than the new event doesn't surround an existing event
         if (end_prev_start != null && start_next_end != null) {
-            // Get the range associated with the keys and if they are equal the new event conflicts
-            Range prev_event = byStart.find(end_prev_start);
-            Range next_event = byEnd.find(start_next_end);
-            if (prev_event.equals(next_event)) {
+            // If both values are inside the new event there is a conflict
+            if (end_prev_start > query.start && start_next_end < query.end) {
                 return true;
             }
         }
