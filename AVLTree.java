@@ -52,7 +52,7 @@ public class AVLTree  <K extends Comparable<K>, V> extends BinarySearchTree<K,V>
                 if (getBalance(cur_node.right) == 1) {
                     rotateRight(cur_node.right, cur_node);
                 }
-                TreeNode<K, V> parent = !stack.isEmpty ? stack.peek() : null;
+                TreeNode<K, V> parent = !stack.isEmpty() ? stack.peek() : null;
                 // Then rotate left to balance
                 rotateLeft(cur_node, parent);
             // Case where left side is heavy
@@ -61,7 +61,7 @@ public class AVLTree  <K extends Comparable<K>, V> extends BinarySearchTree<K,V>
                 if (getBalance(cur_node.left) == -1) {
                     rotateLeft(cur_node.left, cur_node);
                 }
-                TreeNode<K, V> parent = !stack.isEmpty ? stack.peek() : null;
+                TreeNode<K, V> parent = !stack.isEmpty() ? stack.peek() : null;
                 // Then rotate right to balance
                 rotateRight(cur_node, parent);
             }
