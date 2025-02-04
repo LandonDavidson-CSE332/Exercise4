@@ -82,13 +82,13 @@ public class AVLTree  <K extends Comparable<K>, V> extends BinarySearchTree<K,V>
         TreeNode<K, V> rightNode = node.right;
         // If node is root set rightNode to root
         if (parent == null) {
-            root = rightNode
+            root = rightNode;
         // Otherwise set rightNode to the proper child of parent (compare keys)
         } else {
             if (parent.key.compareTo(rightNode.key) > 0) {
                 parent.left = rightNode;
             } else {
-                parent.right  = rightNode
+                parent.right  = rightNode;
             }
         }
         // If node.right.left isn't null we need to move it to node.right
@@ -109,13 +109,13 @@ public class AVLTree  <K extends Comparable<K>, V> extends BinarySearchTree<K,V>
         TreeNode<K, V> leftNode = node.left;
         // If node is root set leftNode to root
         if (parent == null) {
-            root = leftNode
+            root = leftNode;
         // Otherwise set leftNode to the proper child of parent (compare keys)
         } else {
             if (parent.key.compareTo(leftNode.key) > 0) {
                 parent.left = leftNode;
             } else {
-                parent.right  = leftNode
+                parent.right  = leftNode;
             }
         }
         // If node.left.right isn't null we need to move it to node.left
